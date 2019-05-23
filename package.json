@@ -9,7 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.0.0",
+    "jsonwebtoken": "^8.5.1",
     "node-pty": "^0.8.1",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "socketio-jwt": "^4.5.0"
   }
 }
