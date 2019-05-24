@@ -15,13 +15,7 @@ if (!secret) {
 console.log(`socket.io server on port ${port}`);
 
 const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
-const ptyProcess = pty.spawn(shell, [], {
-  name: "xterm-color",
-  cols: 80,
-  rows: 30,
-  cwd: process.env.HOME,
-  env: process.env
-});
+const ptyProcesses = new Map();
 
 io.on(
   "connection",
@@ -31,20 +25,35 @@ io.on(
   })
 )
   .on("authenticated", function(socket) {
-    console.log("Authentication! ", socket.decoded_token);
+    const { decoded_token } = socket;
+    const { data } = decoded_token;
+    console.log("Authentication! ", decoded_token);
+    socket.emit("profile", decoded_token);
+    let ptyProcess = ptyProcesses.get(data);
+    if (ptyProcess == null) {
+      ptyProcess = pty.spawn(shell, [], {
+        name: "xterm-color",
+        cols: 80,
+        rows: 30,
+        cwd: process.env.HOME,
+        env: process.env
+      });
+      ptyProcesses.set(data, ptyProcess);
+    }
+    ptyProcess.resize(80, 35);
+    ptyProcess.write("ls\r");
+
     socket.on("sendData", data => {
       console.log("Got data from sendData");
       ptyProcess.write(data);
     });
-    socket.emit("token", socket.decoded_token);
+    socket.on("resize", ({ rows = 35, cols = 80 }) => {
+      ptyProcess.resize(cols, rows);
+    });
     ptyProcess.on("data", data => {
       socket.emit("data", data);
     });
   })
   .on("unauthorized", err => {
-    console.error("um please", err);
+    console.error("Unauthorized access", err);
   });
-
-ptyProcess.write("ls\r");
-ptyProcess.resize(80, 35);
-ptyProcess.write("ls\r");
