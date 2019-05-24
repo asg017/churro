@@ -1,10 +1,12 @@
+#!/usr/bin/env node
+
 const args = process.argv.slice(2, process.argv.length);
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const usage = {
-  generate: `node cli.js generate [username] [optional:expires]`,
-  verify: `node cli.js verify [token]`
+  generate: `./cli.js generate [username] [optional:expires]`,
+  verify: `./cli.js verify [token]`
 };
 if (args.length < 1) {
   console.log("usage:");
