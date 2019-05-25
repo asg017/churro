@@ -32,9 +32,9 @@ io.on(
     let ptyProcess = ptyProcesses.get(data);
     if (ptyProcess == null) {
       ptyProcess = pty.spawn(shell, [], {
-        name: "xterm-color",
+        name: `xterm-color${data}`,
         cols: 80,
-        rows: 30,
+        rows: 35,
         cwd: process.env.HOME,
         env: process.env
       });
@@ -44,7 +44,6 @@ io.on(
     ptyProcess.write("ls\r");
 
     socket.on("sendData", data => {
-      console.log("Got data from sendData");
       ptyProcess.write(data);
     });
     socket.on("resize", ({ rows = 35, cols = 80 }) => {
