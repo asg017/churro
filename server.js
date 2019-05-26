@@ -41,7 +41,7 @@ io.on(
       ptyProcesses.set(data, ptyProcess);
     }
     ptyProcess.resize(80, 35);
-    ptyProcess.write("ls\r");
+    ptyProcess.write('echo "Connected to a client! "\r');
 
     socket.on("sendData", data => {
       ptyProcess.write(data);

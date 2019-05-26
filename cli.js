@@ -8,6 +8,7 @@ const usage = {
   generate: `./cli.js generate [username] [optional:expires]`,
   verify: `./cli.js verify [token]`
 };
+
 if (args.length < 1) {
   console.log("usage:");
   console.log(usage.generate);
@@ -26,18 +27,18 @@ const generate = args => {
     console.error(`Generate needs a username argument : ${usage.generate}`);
     return;
   }
-  const username = args[1];
-  const expires = args[2] || "6h";
+  const name = args[1];
+  const expires = args[2] || "6h"; // default - expire in 6 hrs
 
   const token = jwt.sign(
     {
-      data: username
+      data: name
     },
     secret,
     { expiresIn: expires }
   );
 
-  console.log(`Secret token for ${username} - expires in ${expires}:`);
+  console.log(`Secret token for ${name} - expires in ${expires}:`);
   console.log(token);
 };
 
