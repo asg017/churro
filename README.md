@@ -2,6 +2,9 @@
 
 Access your computer's terminal in an Observable notebook!
 
+![Gif of a screen recording of churro in action](https://gist.githubusercontent.com/asg017/39c218cfb5dcbcd3e1bee8a9cf7cadef/raw/05caba41b076e2820cb71bdebbfbe9dcaa0d8309/xterm.gif)
+
+
 ## Overview
 
 Churro is a basic server that you run locally on your computer (or any
@@ -13,19 +16,6 @@ process that is directly piped into the xterm.js Terminal on Observable. Each co
 In essence, it's kinda like an SSH server, but with less security and
 a little easier to manage!
 
-## security
-
-Be extremely cautious using this! If an attacker has direct access to your
-terminal it's game over. If you do use this, consider taking these steps to make yourself (a little) more secure:
-
-1. Never forward your port to ngrok.io or some other service! Keep it only on
-   localhost to limit any attacks.
-2. Have tokens expires quickly! This is why this uses JWT - it's annoying to
-   keep generating tokens but it at least keeps you safer.
-3. Don't run this on an AWS server or something similar - run this on your local
-   machine then ssh into wherever.
-4. Try and run this in a Docker instance instance of your full computer's shell.
-
 ## Uses
 
 - No need to switch windows from Observable <-> your terminal, keep it all in once place!
@@ -35,26 +25,58 @@ terminal it's game over. If you do use this, consider taking these steps to make
 ## Installation
 
 ```bash
-git clone ....
-
+git clone https://github.com/asg017/churro
 cd churro/
-npm install
+npm install --production
 ```
 
-Then, in one terminal, run:
+Now, copy+paste `.sample-env` into `.env`, and add a secret to `SECRET`. 
+Password generator [here!](https://observablehq.com/@asg017/password)
+
+Now, you can run the server with:
+
 
 ```bash
 npm start
-
-> putty@1.0.0 start /home/you/churro
-> nodemon server.js
-
-[nodemon] 1.19.0
-[nodemon] to restart at any time, enter `rs`
-[nodemon] watching: *.*
-[nodemon] starting `node server.js`
 socket.io server on port 8888
-
 ```
 
-Sweet, your server is now running!
+Sweet, your server is now running! 
+
+Now, to generate a token to use in the notebook:
+
+```bash
+./cli.js generate [namespace] [expires]
+```
+
+`[namespace]` could be any string, used so you can have multiple connections to 
+different terminal processes. `[expires]` is optional, it's how long the 
+token will be good for. For example:
+
+```bash
+./cli.js generate pipeline 1hr
+
+Secret token for pipeline - expires in 1hr:
+[Token printed out here]
+```
+
+Keep in mind, the terminal processes that are created are kept in memory - so
+if the server restarts or dies, then you'll lose that process.
+
+
+## Security
+
+Be extremely cautious using this! If an attacker has direct access to your
+terminal it's game over. If you do use this, consider taking these steps to make yourself (a little) more secure:
+
+1. Never forward your port to ngrok.io or some other service! Keep it only on
+   localhost.
+2. Have tokens expires quickly! This is why this uses JWT - it's annoying to
+   keep re-generating tokens, but it at least keeps you safer.
+3. Don't run this on an AWS server or something similar - run this on your local
+   machine then ssh into wherever.
+4. Try and run this in a Docker instance instead of your full computer's shell.
+
+## Contributing
+
+Send in PR's to this repo or any Observable notebook about xterm in Observable!
