@@ -45,7 +45,7 @@ Sweet, your server is now running!
 
 ### Note on Windows
 
-`node-pty` may requires some special depedencies on Windows - see [this](https://github.com/microsoft/node-pty#windows)
+`node-pty` may requires some special dependencies on Windows - see [this](https://github.com/microsoft/node-pty#windows)
 for more info.
 
 ### Generating tokens
