@@ -30,7 +30,7 @@ cd churro/
 npm install --production
 ```
 
-Now, copy+paste `.sample-env` into `.env`, and add a secret to `SECRET`. 
+Now, copy+paste `.sample-env` into a new file `.env`, and add a secret to `SECRET`.
 Password generator [here!](https://observablehq.com/@asg017/password)
 
 Now, you can run the server with:
@@ -41,16 +41,23 @@ npm start
 socket.io server on port 8888
 ```
 
-Sweet, your server is now running! 
+Sweet, your server is now running!
 
-Now, to generate a token to use in the notebook:
+### Note on Windows
+
+`node-pty` may requires some special depedencies on Windows - see [this](https://github.com/microsoft/node-pty#windows)
+for more info.
+
+### Generating tokens
+
+To generate a token to use in s notebook:
 
 ```bash
 ./cli.js generate [namespace] [expires]
 ```
 
-`[namespace]` could be any string, used so you can have multiple connections to 
-different terminal processes. `[expires]` is optional, it's how long the 
+`[namespace]` could be any string, used so you can have multiple connections to
+different terminal processes. `[expires]` is optional, it's how long the
 token will be good for. For example:
 
 ```bash
